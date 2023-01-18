@@ -1,0 +1,9 @@
+//covered in StarNotaryV2 - added
+{
+  "globals": {
+    "assert": true,
+    "artifacts": true,
+    "contract": true,
+    "it": true
+  }
+}
