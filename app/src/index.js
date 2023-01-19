@@ -46,7 +46,7 @@ import starNotaryArtifact from "../../build/contracts/StarNotary.json";
     lookUp: async function () {
       const { lookUpStarTokeIDToStarInfo } = this.meta.methods;
 
-      const ID = document.getElementById("lookUpStarTokenID").value;
+      const ID = document.getElementById("lookid").value;
       const starName = await lookUpStarTokeIDToStarInfo(ID).call();
 
       if (starName) {
