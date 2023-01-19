@@ -1,75 +1,79 @@
 import Web3 from "web3";
 import starNotaryArtifact from "../../build/contracts/StarNotary.json";
 
-const App = {
-  web3: null,
-  account: null,
-  meta: null,
+(function () {
+  "use strict";
 
-  start: async function () {
-    const { web3 } = this;
+  const App = {
+    web3: null,
+    account: null,
+    meta: null,
 
-    try {
-      // get contract instance
-      const networkId = await web3.eth.net.getId();
-      const deployedNetwork = starNotaryArtifact.networks[networkId];
-      this.meta = new web3.eth.Contract(
-        starNotaryArtifact.abi,
-        deployedNetwork.address
-      );
+    start: async function () {
+      const { web3 } = this;
 
-      // get accounts
-      const accounts = await web3.eth.getAccounts();
-      this.account = accounts[0];
-    } catch (error) {
-      console.error("Could not connect to contract or chain.");
-    }
-  },
+      try {
+        // get contract instance
+        const networkId = await web3.eth.net.getId();
+        const deployedNetwork = starNotaryArtifact.networks[networkId];
+        this.meta = new web3.eth.Contract(
+          starNotaryArtifact.abi,
+          deployedNetwork.address
+        );
 
-  setStatus: function (message) {
-    const status = document.getElementById("status");
-    status.innerHTML = message;
-  },
+        // get accounts
+        const accounts = await web3.eth.getAccounts();
+        this.account = accounts[0];
+      } catch (error) {
+        console.error("Could not connect to contract or chain.");
+      }
+    },
 
-  createStar: async function () {
-    const { createStar } = this.meta.methods;
-    const name = document.getElementById("starName").value;
-    const id = document.getElementById("starId").value;
-    await createStar(name, id).send({ from: this.account });
-    App.setStatus("New Star Owner is " + this.account + ".");
-  },
+    setStatus: function (message) {
+      const status = document.getElementById("status");
+      status.innerHTML = message;
+    },
 
-  // Implement Task 4 Modify the front end of the DAPP
-  lookUp: async function () {
-    const { lookUpStarTokeIDToStarInfo } = this.meta.methods;
+    createStar: async function () {
+      const { createStar } = this.meta.methods;
+      const name = document.getElementById("starName").value;
+      const id = document.getElementById("starId").value;
+      await createStar(name, id).send({ from: this.account });
+      App.setStatus("New Star Owner is " + this.account + ".");
+    },
 
-    const ID = document.getElementById("lookUpStarTokenID").value;
-    const starName = await lookUpStarTokeIDToStarInfo(ID).call();
+    // Implement Task 4 Modify the front end of the DAPP
+    lookUp: async function () {
+      const { lookUpStarTokeIDToStarInfo } = this.meta.methods;
 
-    if (starName) {
-      App.setStatus(`The Star Name with ID ${ID} is "${starName}"`);
+      const ID = document.getElementById("lookUpStarTokenID").value;
+      const starName = await lookUpStarTokeIDToStarInfo(ID).call();
+
+      if (starName) {
+        App.setStatus(`The Star Name with ID ${ID} is "${starName}"`);
+      } else {
+        App.setStatus(`Unable to find Star with ID ${ID}`);
+      }
+    },
+  };
+
+  window.App = App;
+
+  window.addEventListener("load", async function () {
+    if (window.ethereum) {
+      // use MetaMask's provider
+      App.web3 = new Web3(window.ethereum);
+      await window.ethereum.enable(); // get permission to access accounts
     } else {
-      App.setStatus(`Unable to find Star with ID ${ID}`);
+      console.warn(
+        "No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live"
+      );
+      // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
+      App.web3 = new Web3(
+        new Web3.providers.HttpProvider("http://127.0.0.1:9545")
+      );
     }
-  },
-};
 
-window.App = App;
-
-window.addEventListener("load", async function () {
-  if (window.ethereum) {
-    // use MetaMask's provider
-    App.web3 = new Web3(window.ethereum);
-    await window.ethereum.enable(); // get permission to access accounts
-  } else {
-    console.warn(
-      "No web3 detected. Falling back to http://127.0.0.1:9545. You should remove this fallback when you deploy live"
-    );
-    // fallback - use your fallback strategy (local node / hosted node + in-dapp id mgmt / fail)
-    App.web3 = new Web3(
-      new Web3.providers.HttpProvider("http://127.0.0.1:9545")
-    );
-  }
-
-  App.start();
-});
+    App.start();
+  });
+})();

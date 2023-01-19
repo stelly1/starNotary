@@ -21,12 +21,14 @@
  * phrase from a file you've .gitignored so it doesn't accidentally become public.
  *
  */
-
-//require("dotenv").config();
-//const HDWalletProvider = require("truffle-hdwallet-provider");
-//const infuraKey = INFURA_KEY;
+require("dotenv").config();
+const HDWalletProvider = require("truffle-hdwallet-provider");
+//const { infuraKey, mnemonic } = require("./.env");
+const mnemonic = process.env["MNEMONIC_META"];
+const infuraKey = process.env["INFURA_KEY"];
+//const infuraKey = require("./env/INFURA_API_KEY");
 //const fs = require("fs");
-//const mnemonic = fs.readFileSync(".env").toString().trim();
+//const mnemonic = require("./env/MNEMONIC_METAMASK");
 
 module.exports = {
   /**
@@ -52,6 +54,16 @@ module.exports = {
       network_id: "*", // Any network (default: none)
     },
 
+    sepolia: {
+      provider: () =>
+        new HDWalletProvider(
+          mnemonic,
+          `https://sepolia.infura.io/v3/${infuraKey}`
+        ),
+      network_id: 11155111,
+      gas: 4500000,
+      gasPrice: 10000000000,
+    },
     // Another network with more advanced options...
     //advanced: {
     //host: "127.0.0.1",

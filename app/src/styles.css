@@ -1,0 +1,56 @@
+h1,
+br,
+p {
+  margin: 0;
+  padding: 0;
+}
+
+#starName {
+  text-align: left;
+}
+
+#starId {
+  text-align: left;
+}
+
+body {
+  max-width: 100%;
+  background-color: #e6dcdc;
+  background-image: url("star.gif");
+}
+
+button {
+  appearance: none;
+  background-color: #ffffff;
+  border-radius: 20em;
+  border-style: none;
+  box-shadow: #adcfff 0-12px 6px inset;
+  box-sizing: border-box;
+  color: #000000;
+  cursor: pointer;
+  display: inline-block;
+  font-family: "Times New Roman", Times, serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  letter-spacing: -0.24px;
+  margin: 0;
+  contain-intrinsic-height: 10px;
+  outline: none;
+  padding: 1rem 1.3rem;
+  quotes: auto;
+  text-align: center;
+  text-decoration: none;
+  transition: all 0.15s;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+.content {
+  position: absolute;
+  top: 20px;
+  bottom: 10px;
+  left: 20px;
+  width: 400px;
+  padding: 20px;
+}
