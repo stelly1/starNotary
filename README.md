@@ -1,6 +1,7 @@
 # Project Details
 
 \*\*Specify the Truffle version and OpenZeppelin version used in the project.
+
 Truffle v5.5.16 (core: 5.5.16)
 
 Openzeppelin v2.3
